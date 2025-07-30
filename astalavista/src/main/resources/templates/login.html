@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body th:attr="data-active-form=${activeForm}">
+    <div id="container" class="container">
+		<!-- FORM SECTION -->
+		<div class="row">
+			<!-- SIGN UP -->
+			<div class="col align-items-center flex-col sign-up">
+				<div class="form-wrapper align-items-center">
+					<form class="form sign-up" method="post" action="/register">
+						<div class="input-group">
+							<i class='bx bxs-user'></i>
+							<input type="text" name="username" placeholder="Username">
+						</div>
+						<div class="input-group">
+							<i class='bx bxs-lock-alt'></i>
+							<input type="password" name="password" placeholder="Password">
+						</div>
+						<div class="input-group">
+							<i class='bx bxs-lock-alt'></i>
+							<input type="text" name="name" placeholder="First Name">
+						</div>
+                        <div class="input-group">
+							<i class='bx bxs-lock-alt'></i>
+							<input type="text" name="surname" placeholder="Last Name">
+						</div>
+                        <div class="input-group">
+							<i class='bx bxs-lock-alt'></i>
+							<input type="text" name="street" placeholder="Street">
+						</div>
+                        <div class="input-group">
+							<i class='bx bxs-lock-alt'></i>
+							<input type="text" name="city" placeholder="City">
+						</div>
+                        <div class="input-group">
+							<i class='bx bxs-lock-alt'></i>
+                            <label for="country">Country:</label>
+                            <select name="country" id="country" required>
+                                <option value="" disabled selected>Choose a country</option>
+                                <th:block th:each="country : ${countries}">
+                                    <option th:value="${country.id}" th:text="${country.name}"></option>
+                                </th:block>
+                            </select>
+						</div>
+                        <div class="input-group">
+							<i class='bx bxs-lock-alt'></i>
+							<input type="text" name="postalCode" placeholder="Zip/Postal Code">
+						</div>
+                        <div th:if="${activeForm == 'signup'} and ${error}" style="color: red; margin-bottom: 15px;">
+                            <p th:text="${error}"></p>
+                        </div>
+						<button type="submit">
+							Sign up
+						</button>
+						<p>
+							<span>
+								Hai già un account?
+							</span>
+							<b onclick="toggle()" class="pointer">
+								Accedi
+							</b>
+						</p>
+					</form>
+				</div>
+			
+			</div>
+			<!-- END SIGN UP -->
+			<!-- SIGN IN -->
+			<div class="col align-items-center flex-col sign-in">
+				<div class="form-wrapper align-items-center">
+					<form class="form sign-in" method="post" action="/login">
+						<div class="input-group">
+							<i class='bx bxs-user'></i>
+							<input type="text" name="username" placeholder="Username" required>
+						</div>
+						<div class="input-group">
+							<i class='bx bxs-lock-alt'></i>
+							<input type="password" name="password" placeholder="Password" required>
+						</div>
+						<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+						<label>
+							<input type="checkbox" name="remember-me">
+							Ricordami
+						</label>
+						<div th:if="${param.error}" style="color: red; margin-bottom: 15px;">
+							<p>Credenziali non valide</p>
+						</div>
+						<button type="submit">
+							Sign in
+						</button>
+						<p>
+							<span>Non hai un account?</span>
+							<b onclick="toggle()" class="pointer">Registrati</b>
+						</p>
+					</form>
+				</div>
+				<div class="form-wrapper">
+		
+				</div>
+			</div>
+			<!-- END SIGN IN -->
+		</div>
+		<!-- END FORM SECTION -->
+		<!-- CONTENT SECTION -->
+		<div class="row content-row">
+			<!-- SIGN IN CONTENT -->
+            <div class="col align-items-center flex-col">
+                <div class="logo-container img sign-in">
+                    <img src="/images/logo.png" alt="AstaLaVista" class="logo-img" />
+                </div>
+
+                <div class="title-wrapper text sign-in">
+                    <h2 class="hero-title">
+                    Asta<span class="highlight">La</span>Vista...<br>Baby
+                    </h2>
+                </div>
+            </div>
+			<!-- END SIGN IN CONTENT -->
+			<!-- SIGN UP CONTENT -->
+			<div class="col align-items-center flex-col">
+                <div class="logo-container img sign-up">
+                    <img src="/images/glasses.png" alt="AstaLaVista" class="logo-img" />
+                </div>
+
+                <div class="title-wrapper text sign-up">
+                    <h2 class="hero-title sign-up">
+                    Il tuo affare ti aspetta!
+                    </h2>
+                </div>
+            </div>
+			<!-- END SIGN UP CONTENT -->
+		</div>
+		<!-- END CONTENT SECTION -->
+	</div>
+    <script src="/js/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,494 @@
+:root {
+    --main-bg: #f5f6fa;
+    --card-bg: #ffffff;
+    --text-color: #2c3e50;
+    --gray: #7f8c8d;
+    --radius: 16px;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--main-bg);
+    color: var(--text-color);
+}
+
+section {
+    width: 100vw;
+}
+
+#closedAuctions, #newAuction {
+    background-color: var(--primary-color);
+}
+
+.auction-section {
+    display: grid;
+    grid-template-rows: 1fr;
+    gap: 2rem;
+    max-width: 1300px;
+    margin: 2rem auto;
+    padding: 1rem 1rem;
+    animation: fadeSlideUp 0.8s ease-in-out;
+    color: var(--text-color);
+}
+
+.auction-section h1 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    
+}
+
+.auction-card {
+    background-color: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.auction-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
+}
+
+.auction-header h2 {
+    margin: 0;
+    color: var(--primary-color);
+    font-size: 1.4rem;
+}
+
+.auction-header p {
+    margin: 0.2rem 0;
+    color: var(--gray);
+}
+
+.auction-articles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+    overflow: visible;
+}
+
+.article {
+    background-color: #ffffff;
+    border-radius: 12px;
+    width: 180px;
+    padding: 1rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    will-change: transform, box-shadow;
+    position: relative;
+    z-index: 0;
+}
+
+.article:hover {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    z-index: 1;
+}
+
+.article img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.article-details {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.article-details p {
+    margin: 0.2rem 0;
+}
+
+.empty-message {
+    display: flex;
+    justify-content: center;
+}
+
+/* Animazioni */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeSlideUp 0.6s ease forwards;
+}
+
+@keyframes fadeSlideUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+    .auction-articles {
+        justify-content: center;
+    }
+
+    .article {
+        width: 90%;
+        max-width: 300px;
+    }
+
+    .auction-header h2 {
+        font-size: 1.2rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .auction-section h1 {
+        font-size: 1.5rem;
+    }
+}
+
+#addArticle {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    animation: fadeSlideUp 0.8s ease-in-out;
+}
+
+#addArticle h1 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+}
+
+/* Contenitore del form */
+.form-container {
+    background-color: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Form */
+.article-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    animation: fadeSlideUp 0.6s ease forwards;
+}
+
+.article-form h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+/* Input e textarea */
+.article-form input[type="text"],
+.article-form input[type="number"],
+.article-form input[type="file"],
+.article-form textarea {
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: var(--radius);
+    background-color: #fdfdfd;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+    color: var(--text-color);
+}
+
+.article-form input:focus,
+.article-form textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+}
+
+/* Bottone */
+.article-form button {
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 1rem;
+    padding: 0.8rem 1rem;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    font-weight: bold;
+}
+
+.article-form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(231, 76, 60, 0.3);
+}
+
+/* Responsive */
+@media screen and (max-width: 600px) {
+    .article-form {
+        padding: 1rem;
+    }
+}
+
+/* Container del form */
+.auction-form-container {
+    background-color: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Grid degli articoli selezionabili */
+.articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Card selezionabile */
+.article-card {
+    width: 180px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+/* Label che funge da card cliccabile */
+.article-label {
+    display: block;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+/* Selezione attiva */
+.checkbox-hidden:checked + .card-content {
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 0 12px rgba(231, 76, 60, 0.3);
+}
+
+/* Nascondi checkbox */
+.checkbox-hidden {
+    display: none;
+}
+
+/* Contenuto della card */
+.card-content {
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.card-content:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+}
+
+/* Immagine */
+.preview-img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+}
+
+/* Testi */
+.article-name {
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.article-price,
+.article-id {
+    font-size: 0.9rem;
+    color: var(--gray);
+}
+
+/* Campi aggiuntivi */
+.auction-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.auction-fields label {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.auction-fields input {
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: var(--radius);
+    font-size: 1rem;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.auction-fields input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+    outline: none;
+}
+
+/* Bottone finale */
+.submit-container {
+    text-align: center;
+}
+
+.confirm-button {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.9rem 2rem;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.confirm-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(231, 76, 60, 0.3);
+}
+
+.article label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer; /* pointer qui */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, outline 0.3s ease;
+}
+
+.article input:checked + label {
+    outline: 3px solid var(--primary-color);
+    border-radius: 12px;
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(231, 76, 60, 0.25);
+}
+
+/* Responsive */
+@media screen and (max-width: 600px) {
+    .auction-fields {
+        flex-direction: column;
+    }
+
+    .confirm-button {
+        width: 100%;
+    }
+}
+
+.reveal-right {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1s ease;
+    transition-delay: 0.5s; 
+    will-change: opacity, transform;
+}
+
+.reveal-right.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.reveal-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: all 1s ease;
+    transition-delay: 0.5s; 
+    will-change: opacity, transform;
+}
+
+.reveal-left.active {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.article.full-width {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  border-radius: var(--radius);
+  background-color: var(--card-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.full-img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  max-height: 400px;
+  object-fit: contain;
+}
+
+.article-details.big-text {
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.article-details.big-text h2 {
+  margin-bottom: 0.8rem;
+  font-size: 1.8rem;
+  color: var(--text-color);
+}
+
+.article-details.big-text p {
+  margin-bottom: 0.5rem;
+}
+
+.carousel-container {
+  position: relative;
+  max-width: 100%;
+  height: auto;
+  overflow: hidden;
+}
+
+.carousel-img {
+  width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 8px;
+  transition: opacity 0.3s ease;
+  display: block;
+  margin: 0 auto;
+}
+
+.carousel button.prev,
+.carousel button.next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0,0,0,0.4);
+  color: white;
+  border: none;
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  z-index: 1;
+  border-radius: 50%;
+}
+
+.carousel button.prev {
+  left: 10px;
+}
+
+.carousel button.next {
+  right: 10px;
+}

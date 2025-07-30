@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dettagli Asta</title>
+  <link rel="stylesheet" href="/css/home.css">
+  <link rel="stylesheet" href="/css/article.css">
+  <link rel="stylesheet" href="/css/header.css">
+</head>
+<body>
+
+  <div th:replace="fragments/header :: header"></div>
+
+  <div class="auction-section">
+
+    <h1 th:text="'Dettagli Lotto #' + ${auction.id}">Dettagli Asta</h1>
+
+    <!-- Prodotti -->
+     <div class="auction-card">
+    <h2>Prodotti in Asta</h2>
+    <div class="auction-articles" style="display: block;">
+        <div th:each="article : ${articles}" class="article full-width">
+            <div th:with="imgList=${images[article.id]}"
+                class="carousel-container"
+                th:attr="data-images-th=${#strings.listJoin(imgList, ',')}">
+                
+                <img th:src="@{|/${imgList[0]}|}" class="carousel-img" alt="Immagine" />
+                
+                <button class="prev" onclick="prevImage(this)">&lt;</button>
+                <button class="next" onclick="nextImage(this)">&gt;</button>
+            </div>
+
+            <div class="article-details big-text">
+                <h2 th:text="${article.name}">Titolo</h2>
+                <p th:text="${article.description}">Descrizione</p>
+                <p><strong th:text="|Prezzo di partenza: ${auction.startPrice} €|">Prezzo</strong></p>
+            </div>
+        </div>
+
+        <div class="article-details big-text">
+            <h2 th:text="${article.name}">Titolo</h2>
+            <p th:text="${article.description}">Descrizione</p>
+            <p><strong th:text="|Prezzo di partenza: ${auction.startPrice} €|">Prezzo</strong></p>
+        </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Vincitore -->
+    <div class="auction-card" th:if="${auction.closed and winner != null}">
+      <h2>Vincitore</h2>
+      <p><strong th:text="|${winner.name} ${winner.surname}|">Mario Rossi</strong></p>
+      <p th:text="|${winner.address.street}, ${winner.address.city} (${winner.address.postalCode})|">Indirizzo</p>
+    </div>
+
+    <!-- Offerte -->
+    <div class="auction-card">
+      <h2>Offerte</h2>
+      <div th:if="${offers == null or offers.isEmpty()}">
+        <p>Nessuna offerta.</p>
+      </div>
+      <ul th:if="${offers != null and !offers.isEmpty()}">
+        <li th:each="offer : ${offers}">
+          <strong th:text="${offer.user.username}">utente</strong> -
+          <span th:text="|${offer.amount} €|">0.00 €</span>
+          <em th:text="${#temporals.format(offer.timestamp, 'dd/MM/yyyy HH:mm:ss')}">data</em>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <script>
+  function nextImage(button) {
+    const container = button.closest(".carousel-container");
+    const imgElement = container.querySelector(".carousel-img");
+    const images = container.getAttribute("data-images-th").split(",").map(i => i.trim());
+
+    const currentSrc = decodeURIComponent(imgElement.getAttribute("src").replace(/^\/+/, ""));
+    let currentIndex = images.findIndex(img => currentSrc.endsWith(img));
+    if (currentIndex === -1) currentIndex = 0;
+
+    const nextIndex = (currentIndex + 1) % images.length;
+    imgElement.setAttribute("src", "/" + encodeURI(images[nextIndex]));
+  }
+
+  function prevImage(button) {
+    const container = button.closest(".carousel-container");
+    const imgElement = container.querySelector(".carousel-img");
+    const images = container.getAttribute("data-images-th").split(",").map(i => i.trim());
+
+    const currentSrc = decodeURIComponent(imgElement.getAttribute("src").replace(/^\/+/, ""));
+    let currentIndex = images.findIndex(img => currentSrc.endsWith(img));
+    if (currentIndex === -1) currentIndex = 0;
+
+    const prevIndex = (currentIndex - 1 + images.length) % images.length;
+    imgElement.setAttribute("src", "/" + encodeURI(images[prevIndex]));
+  }
+    </script>
+</body>
+</html>

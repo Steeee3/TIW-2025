@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendi</title>
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/article.css">
+    <link rel="stylesheet" href="/css/header.css">
+</head>
+<body>
+    <div th:replace="fragments/header :: header"></div>
+    <section id="openAuctions">
+        <div class="auction-section">
+            <h1>Le Tue Aste Attive</h1>
+
+            <div th:if="${#lists.isEmpty(openAuctions)}" class="empty-message">
+                <p>Non hai ancora aste aperte.</p>
+            </div>
+
+            <div class="auction-card" th:each="auction : ${openAuctions}">
+                <div class="fade-in">
+                    <div class="auction-header">
+                        <h2 th:text="'Lotto #' + ${auction.id}"></h2>
+                        <p th:text="'Scade il: ' + ${#temporals.format(auction.endDate, 'dd/MM/yyyy HH:mm')}"></p>
+                        <p th:text="'Prezzo iniziale: €' + ${auction.startPrice}"></p>
+                    </div>
+
+                    <div class="auction-articles fade-in">
+                        <div class="article" th:each="article : ${openAuctionArticlesMap[auction.id]}">
+                            <img th:src="@{|/${openAuctionPreviews[article.id]}|}" alt="Preview">
+                            <div class="article-details">
+                                <strong th:text="${article.name}"></strong>
+                                <p th:text="'€ ' + ${article.price}"></p>
+                                <p th:text="'Codice: ' + ${article.id}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="closedAuctions">
+        <div class="auction-section">
+            <h1 class="text-white">Le Tue Aste Chiuse</h1>
+
+            <div th:if="${#lists.isEmpty(closedAuctions)}" class="empty-message text-white">
+                <p>Non hai ancora aste chiuse.</p>
+            </div>
+
+            <div class="auction-card reveal-left" th:each="auction : ${closedAuctions}">
+                <div class="fade-in">
+                    <div class="auction-header">
+                        <h2 th:text="'Lotto #' + ${auction.id}"></h2>
+                        <p th:text="'Scade il: ' + ${#temporals.format(auction.endDate, 'dd/MM/yyyy HH:mm')}"></p>
+                        <p th:text="'Prezzo iniziale: €' + ${auction.startPrice}"></p>
+                        <p th:text="${closedAuctionLastOffers[auction.id]} == 0 ? 'Nessuna offerta' : 'Prezzo finale: €' + closedAuctionLastOffers[auction.id]"></p>
+                        <div th:if="${#lists.isEmpty(closedAuctions)}">
+                            <p th:text="'Vincitore: ' + ${closedAuctionWinners[auction.id].username}"></p>
+                        </div>
+                    </div>
+
+                    <div class="auction-articles fade-in">
+                        <div class="article" th:each="article : ${closedAuctionArticlesMap[auction.id]}">
+                            <img th:src="@{|/${closedAuctionPreviews[article.id]}|}" alt="Preview">
+                            <div class="article-details">
+                                <strong th:text="${article.name}"></strong>
+                                <p th:text="'€ ' + ${article.price}"></p>
+                                <p th:text="'Codice: ' + ${article.id}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="addArticle">
+        <h1>Aggiungi Un Articolo</h1>
+        <div class="form-container reveal-right">
+            <form action="/addArticle" method="post" enctype="multipart/form-data" class="article-form">
+                <h2>Inserisci i dettagli del tuo articolo</h2>
+
+                <input type="text" name="name" id="name" placeholder="Nome articolo" required maxlength="50"/>
+
+                <input
+                    type="file"
+                    id="images"
+                    name="images"
+                    accept="image/*"
+                    multiple
+                    required
+                    onchange="checkImageLimit(this)"
+                />
+
+                <textarea id="description" name="description" rows="4" placeholder="Descrizione..." required></textarea>
+
+                <input type="number" name="price" id="price" placeholder="Prezzo (€)" required />
+
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+                <button type="submit">Aggiungi</button>
+            </form>
+        </div>
+    </section>
+    <section id="newAuction">
+        <div class="auction-section reveal-left">
+            <h1 class="text-white">Crea un'Asta</h1>
+
+            <div th:if="${#lists.isEmpty(articles)}" class="empty-message text-white">
+                <p>Non hai articoli disponibili. Aggiungi prima un articolo.</p>
+            </div>
+
+            <div th:unless="${#lists.isEmpty(articles)}" class="auction-form-container">
+                <form action="/newAuction" method="post">
+                    <div class="auction-articles">
+                        <div th:each="article : ${articles}">
+                            <div class="article">
+                                <input type="checkbox"
+                                    th:id="'article_' + ${article.id}"
+                                    name="selectedArticles"
+                                    th:value="${article.id}"
+                                    class="checkbox-hidden" />
+                                <label th:for="'article_' + ${article.id}">
+                                    <img th:src="@{|/${previews[article.id]}|}" alt="Preview" />
+                                    <div class="article-details">
+                                        <strong th:text="${article.name}"></strong>
+                                        <p th:text="'€ ' + ${article.price}"></p>
+                                        <p th:text="'Codice: ' + ${article.id}"></p>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+                    <div class="auction-fields">
+                        <label for="endDate">Data fine asta:</label>
+                        <input type="datetime-local" name="endDate" id="endDate" required />
+
+                        <label for="bidStep">Incremento offerta (€):</label>
+                        <input type="number" name="bidStep" id="bidStep" min="1" required />
+                    </div>
+
+                    <div class="submit-container">
+                        <button type="submit" class="confirm-button">Conferma selezione</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <script src="/js/sell.js"></script>
+    <script src="/js/header.js"></script>
+</body>
+</html>

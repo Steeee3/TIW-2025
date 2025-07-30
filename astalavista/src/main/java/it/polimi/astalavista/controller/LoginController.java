@@ -1,0 +1,78 @@
+package it.polimi.astalavista.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import it.polimi.astalavista.exceptions.CountryNotAvailableException;
+import it.polimi.astalavista.service.CountryService;
+import it.polimi.astalavista.service.LoginService;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
+
+@Controller
+public class LoginController {
+    
+    @Autowired
+    private LoginService loginService;
+
+    @Autowired
+    private CountryService countryService;
+
+    @GetMapping({"/login", "/register"})
+    public String showLoginPage(Model model) {
+        model.addAttribute("countries", countryService.getAllCountries());
+        model.addAttribute("activeForm", "login");
+        return "login";
+    }
+
+    // @PostMapping("/login")
+    // public String processLogin(@RequestParam String username, @RequestParam String password, Model model) {
+    //     boolean success = loginService.authenticate(username, password);
+
+    //     if (success) {
+    //         return "redirect:/home";
+    //     } else {
+    //         model.addAttribute("error", "Credenziali non valide");
+    //         model.addAttribute("activeForm", "login");
+    //         model.addAttribute("countries", countryService.getAllCountries());
+    //         return "login";
+    //     }
+    // }
+    
+    @PostMapping("/register")
+    public String processRegistration(
+        @RequestParam String username,
+        @RequestParam String password, 
+        @RequestParam String name,
+        @RequestParam String surname,
+        @RequestParam String country,
+        @RequestParam String city,
+        @RequestParam String street,
+        @RequestParam int postalCode,
+        Model model
+        ) {
+
+            boolean success = false;
+            try {
+                success = loginService.register(username, password, name, surname, country, city, street, postalCode);
+            } catch (CountryNotAvailableException e) {
+                model.addAttribute("error", "Nazione non supportata");
+                model.addAttribute("activeForm", "signup");
+                model.addAttribute("countries", countryService.getAllCountries());
+                return "login";
+            }
+
+            if (success) {
+                return "redirect:/home";
+            } else {
+                model.addAttribute("error", "Username già in uso");
+                model.addAttribute("activeForm", "signup");
+                model.addAttribute("countries", countryService.getAllCountries());
+                return "login";
+            }
+    }
+}

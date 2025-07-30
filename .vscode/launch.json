@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-AstalavistaApplication<astalavista>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "it.polimi.astalavista.AstalavistaApplication",
+            "projectName": "astalavista",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

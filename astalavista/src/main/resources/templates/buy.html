@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acquisto - Aste Aperte</title>
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/header.css">
+</head>
+<body>
+    <div th:replace="fragments/header :: header"></div>
+    <h1>Aste Aperte</h1>
+
+    <section class="search-section">
+        <form th:action="@{/acquisto}" method="get" class="search-form">
+            <input type="text" name="keyword" placeholder="Cerca per parola chiave..." 
+                   th:value="${param.keyword}" required>
+            <button type="submit">Cerca</button>
+        </form>
+    </section>
+
+    
+    <section class="results-section">
+        <div th:if="${openAuctions == null or openAuctions.isEmpty()}">
+            <p>Nessuna asta trovata.</p>
+        </div>
+
+        <div th:if="${openAuctions != null}" th:each="auction : ${openAuctions}" class="auction-card">
+            <h3 th:text="${auction.article?.name}">Nome Articolo</h3>
+            <p th:text="${auction.article?.description}">Descrizione</p>
+            <p>Prezzo iniziale: <span th:text="${auction.startingPrice}">0.00</span> €</p>
+            <a th:href="@{/asta/{id}(id=${auction.id})}">Vedi Dettagli</a>
+        </div>
+
+    </section>
+
+</body>
+</html>

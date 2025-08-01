@@ -121,7 +121,7 @@ public class SellController {
     private void uploadUserUnsoldArticles(Model model) {
         List<Article> unsoldArticles = articleService.getUnsoldArticlesByUser(user);
         unsoldArticles = unsoldArticles.stream()
-            .filter(a -> a.getAuction().isEmpty())
+            .filter(a -> a.getAuction().isEmpty() || a.getAuction().get().isClosed())
             .toList();
 
         Map<Integer, String> previews = new HashMap<>();

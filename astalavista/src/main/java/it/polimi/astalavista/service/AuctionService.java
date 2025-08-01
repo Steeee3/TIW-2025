@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import it.polimi.astalavista.model.Article;
 import it.polimi.astalavista.model.Auction;
@@ -22,6 +23,9 @@ public class AuctionService {
 
     @Autowired
     private ArticleRepository articleRepository;
+
+    @Autowired
+    private OfferService offerService;
 
     public void addAuction(User user, List<Integer> articleIds, LocalDateTime endDate, int bidStep) {
         Auction auction = new Auction();
@@ -93,5 +97,19 @@ public class AuctionService {
 
     public List<Auction> getAllAuctionsWonByUser(User user) {
         return auctionRepository.findClosedAuctionsWonByUser(user);
+    }
+
+    @Transactional
+    public void closeAuction(Auction auction) {
+        auction.close();
+
+        List<Article> articles = articleRepository.findByAuction(Optional.of(auction));
+        boolean hasWinner = offerService.getLastOfferByAuction(auction).isPresent();
+
+        if (hasWinner) {
+            for (Article article : articles) {
+                article.sell();
+            }
+        }
     }
 }

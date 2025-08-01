@@ -54,7 +54,7 @@
                         <h2 th:text="'Lotto #' + ${auction.id}"></h2>
                         <p th:text="'Scade il: ' + ${#temporals.format(auction.endDate, 'dd/MM/yyyy HH:mm')}"></p>
                         <p th:text="'Prezzo iniziale: €' + ${auction.startPrice}"></p>
-                        <p th:text="${closedAuctionLastOffers[auction.id]} == 0 ? 'Nessuna offerta' : 'Prezzo finale: €' + closedAuctionLastOffers[auction.id]"></p>
+                        <p th:text="${closedAuctionLastOffers[auction.id]} == 0 ? 'Nessuna offerta' : 'Prezzo finale: €' + ${closedAuctionLastOffers[auction.id]}"></p>
                         <div th:if="${#lists.isEmpty(closedAuctions)}">
                             <p th:text="'Vincitore: ' + ${closedAuctionWinners[auction.id].username}"></p>
                         </div>

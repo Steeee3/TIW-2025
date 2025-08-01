@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendi</title>
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/article.css">
+    <link rel="stylesheet" href="/css/header.css">
+</head>
+<body>
+    <div th:replace="fragments/header :: header"></div>
+
+    <section id="wonAuctions">
+        <div class="auction-section">
+            <h1>Le Tue Aste Vinte</h1>
+
+            <div th:if="${#lists.isEmpty(closedAuctions)}" class="empty-message text-white">
+                <p>Non hai ancora aste chiuse.</p>
+            </div>
+
+            <a th:href="@{/offer/{id}(id=${auction.id})}" class="auction-card reveal-left" th:each="auction : ${closedAuctions}">
+                <div class="fade-in">
+                    <div class="auction-header">
+                        <h2 th:text="'Lotto #' + ${auction.id}"></h2>
+                        <p th:text="'Prezzo iniziale: €' + ${auction.startPrice}"></p>
+                        <p th:text="${closedAuctionLastOffers[auction.id]} == 0 ? 'Nessuna offerta' : 'Prezzo finale: €' + ${closedAuctionLastOffers[auction.id]}"></p>
+                    </div>
+
+                    <div class="auction-articles fade-in">
+                        <div class="article" th:each="article : ${closedAuctionArticlesMap[auction.id]}">
+                            <img th:src="@{|/${closedAuctionPreviews[article.id]}|}" alt="Preview">
+                            <div class="article-details">
+                                <strong th:text="${article.name}"></strong>
+                                <p th:text="'€ ' + ${article.price}"></p>
+                                <p th:text="'Codice: ' + ${article.id}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <script src="/js/sell.js"></script>
+    <script src="/js/header.js"></script>
+</body>
+</html>

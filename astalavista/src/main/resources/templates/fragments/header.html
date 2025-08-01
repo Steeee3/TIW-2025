@@ -11,6 +11,7 @@
             <a href="/home">Home</a>
             <a href="/sell">Vendi</a>
             <a href="/buy">Compra</a>
+            <a href="/won">Aggiudicate</a>
             <form th:action="@{/logout}" method="post" style="display:inline;">
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                 <a href="#" onclick="this.closest('form').submit(); return false;">Logout</a>

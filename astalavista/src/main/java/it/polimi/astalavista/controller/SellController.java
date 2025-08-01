@@ -109,13 +109,13 @@ public class SellController {
                     previews.put(article.getId(), imgs.get(0).getPath());
                 }
             }
-
-            model.addAttribute("closedAuctions", auctions);
-            model.addAttribute("closedAuctionLastOffers", auctionToLastOffer);
-            model.addAttribute("closedAuctionWinners", auctionToWinner);
-            model.addAttribute("closedAuctionArticlesMap", auctionToArticles);
-            model.addAttribute("closedAuctionPreviews", previews);
         }
+
+        model.addAttribute("closedAuctions", auctions);
+        model.addAttribute("closedAuctionLastOffers", auctionToLastOffer);
+        model.addAttribute("closedAuctionWinners", auctionToWinner);
+        model.addAttribute("closedAuctionArticlesMap", auctionToArticles);
+        model.addAttribute("closedAuctionPreviews", previews);
     }
 
     private void uploadUserUnsoldArticles(Model model) {

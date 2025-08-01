@@ -53,7 +53,7 @@
       </div>
     </div>
 
-    <form action="/placeOffer" method="post" style="text-align:center; margin-top:1rem; margin-bottom:1rem;">
+    <form th:if="${!auction.isClosed()}" action="/placeOffer" method="post" style="text-align:center; margin-top:1rem; margin-bottom:1rem;">
         <input type="hidden" name="auctionId" th:value="${auction.id}" />
 
         <input type="number" name="offer" th:min="${auction.startPrice}" th:step="${auction.bidStep}" placeholder="Offerta (€)"
@@ -83,6 +83,8 @@
     </div>
 
   </div>
+
+  <script src="/js/header.js"></script>
 
   <script>
   function nextImage(button) {

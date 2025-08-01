@@ -46,7 +46,7 @@
       <h2>Azioni Asta</h2>
       <form action="/closeAuction" method="post" style="text-align:center; margin-top:1rem; margin-bottom:1rem;">
         <input type="hidden" name="auctionId" th:value="${auction.id}" />
-        
+
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
         <button type="submit" class="confirm-button">
             Termina Asta
@@ -77,6 +77,8 @@
     </div>
 
   </div>
+
+  <script src="/js/header.js"></script>
 
   <script>
   function nextImage(button) {

@@ -58,7 +58,7 @@
       <ul th:if="${offers != null and !offers.isEmpty()}">
         <li th:each="offer : ${offers}">
           <strong th:text="${offer.user.username}">utente</strong> -
-          <span th:text="|${offer.amount} €|">0.00 €</span>
+          <span th:text="|${offer.price} €|">0.00 €</span>
           <em th:text="${#temporals.format(offer.timestamp, 'dd/MM/yyyy HH:mm:ss')}">data</em>
         </li>
       </ul>

@@ -29,14 +29,14 @@ public class ImageService {
     }
     
     public void addImages(MultipartFile[] images, Article article) {
-        int priority = 0;
+        int priority = images.length - 1;
         for (MultipartFile fileImage : images) {
             Image image = new Image();
             
             image.setPriority(priority);
             image.setArticle(article);
 
-            String path = saveImageInDefaultFolder(fileImage, priority++, article);
+            String path = saveImageInDefaultFolder(fileImage, priority--, article);
             image.setPath(path);
 
             imageRepository.save(image);

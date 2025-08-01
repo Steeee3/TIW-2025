@@ -147,7 +147,7 @@ public class SellController {
     ) {
         articleService.addArticle(user, name, description, price, images);
 
-        return "sell";
+        return "redirect:/sell";
     }
 
     @PostMapping("/newAuction")
@@ -158,8 +158,6 @@ public class SellController {
     ) {
         auctionService.addAuction(user, selectedIds, endDate, bidStep);
 
-        return "sell"; 
-    }
-    
-    
+        return "redirect:/sell"; 
+    } 
 }

@@ -28,20 +28,6 @@ public class LoginController {
         model.addAttribute("activeForm", "login");
         return "login";
     }
-
-    // @PostMapping("/login")
-    // public String processLogin(@RequestParam String username, @RequestParam String password, Model model) {
-    //     boolean success = loginService.authenticate(username, password);
-
-    //     if (success) {
-    //         return "redirect:/home";
-    //     } else {
-    //         model.addAttribute("error", "Credenziali non valide");
-    //         model.addAttribute("activeForm", "login");
-    //         model.addAttribute("countries", countryService.getAllCountries());
-    //         return "login";
-    //     }
-    // }
     
     @PostMapping("/register")
     public String processRegistration(
@@ -49,14 +35,16 @@ public class LoginController {
         @RequestParam String password, 
         @RequestParam String name,
         @RequestParam String surname,
-        @RequestParam String country,
+        @RequestParam int countryId,
         @RequestParam String city,
         @RequestParam String street,
-        @RequestParam int postalCode,
+        @RequestParam String postalCode,
         Model model
         ) {
 
             boolean success = false;
+
+            String country = countryService.getCoutryNameById(countryId);
             try {
                 success = loginService.register(username, password, name, surname, country, city, street, postalCode);
             } catch (CountryNotAvailableException e) {

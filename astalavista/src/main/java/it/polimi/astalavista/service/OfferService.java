@@ -30,4 +30,10 @@ public class OfferService {
     public List<Offer> getOffers(Auction auction) {
         return offerRepository.findByAuctionOrderByTimestampDesc(auction);
     }
+
+    public void placeOffer(User user, Auction auction, float price) {
+        Offer offer = new Offer(price, user, auction);
+
+        offerRepository.save(offer);
+    }
 }

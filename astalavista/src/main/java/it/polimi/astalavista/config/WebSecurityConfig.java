@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.web.configuration.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-
 import it.polimi.astalavista.service.CustomUserDetailsService;
 
 @Configuration
@@ -45,7 +44,10 @@ public class WebSecurityConfig {
                 .userDetailsService(customUserDetailsService)
             )
             .logout(logout -> logout
-                .logoutUrl("/logout")
+                .logoutRequestMatcher(request -> 
+                    request.getRequestURI().equals("/logout") &&
+                    ("GET".equalsIgnoreCase(request.getMethod()) || "POST".equalsIgnoreCase(request.getMethod()))
+                )
                 .logoutSuccessUrl("/login?logout=true")
                 .deleteCookies("JSESSIONID", "remember-me")
             );

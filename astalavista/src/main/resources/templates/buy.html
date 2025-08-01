@@ -5,34 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acquisto - Aste Aperte</title>
     <link rel="stylesheet" href="/css/home.css">
-    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/article.css" />
+    <link rel="stylesheet" href="/css/header.css" />
 </head>
 <body>
     <div th:replace="fragments/header :: header"></div>
-    <h1>Aste Aperte</h1>
+    <section class="auction-section">
+        <h1>Scopri le Aste Disponibili</h1>
 
-    <section class="search-section">
-        <form th:action="@{/acquisto}" method="get" class="search-form">
-            <input type="text" name="keyword" placeholder="Cerca per parola chiave..." 
-                   th:value="${param.keyword}" required>
-            <button type="submit">Cerca</button>
+        <form action="/buy" method="get" class="search-form" style="text-align:center; margin-bottom:2rem;">
+            <input type="text" name="keyword" placeholder="Cerca per parola chiave..." required
+                style="padding: 0.8rem; width: 60%; max-width: 500px; border-radius: var(--radius); border: 1px solid #ccc;" />
+            <button type="submit" style="padding: 0.8rem 1.2rem; background-color: var(--primary-color); color: white; border: none; border-radius: var(--radius); font-weight: bold; cursor: pointer;">Cerca</button>
         </form>
-    </section>
 
-    
-    <section class="results-section">
-        <div th:if="${openAuctions == null or openAuctions.isEmpty()}">
-            <p>Nessuna asta trovata.</p>
+        <div th:if="${auctions != null and auctions.isEmpty()}" class="empty-message">
+            <p>Nessuna asta trovata per la parola chiave selezionata.</p>
         </div>
 
-        <div th:if="${openAuctions != null}" th:each="auction : ${openAuctions}" class="auction-card">
-            <h3 th:text="${auction.article?.name}">Nome Articolo</h3>
-            <p th:text="${auction.article?.description}">Descrizione</p>
-            <p>Prezzo iniziale: <span th:text="${auction.startingPrice}">0.00</span> €</p>
-            <a th:href="@{/asta/{id}(id=${auction.id})}">Vedi Dettagli</a>
-        </div>
+        <a th:href="@{/offer/{id}(id=${auction.id})}" th:each="auction : ${auctions}" class="auction-card fade-in">
+            <div class="auction-header">
+                <h2 th:text="'Lotto #' + ${auction.id}"></h2>
+                <p th:text="'Scade il: ' + ${#temporals.format(auction.endDate, 'dd/MM/yyyy HH:mm')}"></p>
+            </div>
 
+            <div class="auction-articles">
+                <div class="article" th:each="article : ${openAuctionArticlesMap[auction.id]}">
+                    <img th:src="@{|/${openAuctionPreviews[article.id]}|}" alt="Preview articolo">
+                    <div class="article-details">
+                        <strong th:text="${article.name}"></strong>
+                        <p th:text="'€ ' + ${article.price}"></p>
+                        <p th:text="'Codice: ' + ${article.id}"></p>
+                    </div>
+                </div>
+            </div>
+        </a>
     </section>
-
 </body>
 </html>

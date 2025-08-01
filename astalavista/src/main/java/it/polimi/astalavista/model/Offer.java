@@ -32,6 +32,10 @@ public class Offer {
     @JoinColumn(name = "auction_id", nullable = true)
     private Auction auction;
 
+    public Offer() {
+        
+    }
+
     public Offer(float price, User user, Auction auction) {
         this.price = price;
         this.timestamp = LocalDateTime.now();

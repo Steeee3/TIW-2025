@@ -14,6 +14,12 @@ public class CountryService {
     @Autowired
     private CountryRepository countryRepository;
 
+    public String getCoutryNameById(int id) {
+        return countryRepository.findById(id)
+            .map(c -> c.getName())
+            .orElse("default");
+    }
+
     public List<Country> getAllCountries() {
         return countryRepository.findAllByOrderByNameAsc();
     }

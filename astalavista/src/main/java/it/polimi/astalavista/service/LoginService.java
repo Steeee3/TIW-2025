@@ -49,7 +49,7 @@ public class LoginService {
         String country,
         String city,
         String street,
-        int postalCode
+        String postalCode
         ) throws CountryNotAvailableException {
 
         if (userRepository.findByUsername(username).isPresent()) {
@@ -79,6 +79,13 @@ public class LoginService {
         }
 
         user.setAddress(address);
+
+        try {
+            userRepository.save(user);
+            System.out.println("[DEBUG] User salvato.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         userRepository.save(user);
         return true;
     }

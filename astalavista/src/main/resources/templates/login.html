@@ -40,8 +40,8 @@
 						</div>
                         <div class="input-group">
 							<i class='bx bxs-lock-alt'></i>
-                            <label for="country">Country:</label>
-                            <select name="country" id="country" required>
+                            <label for="countryId">Country:</label>
+                            <select name="countryId" id="countryId" required>
                                 <option value="" disabled selected>Choose a country</option>
                                 <th:block th:each="country : ${countries}">
                                     <option th:value="${country.id}" th:text="${country.name}"></option>
@@ -55,6 +55,7 @@
                         <div th:if="${activeForm == 'signup'} and ${error}" style="color: red; margin-bottom: 15px;">
                             <p th:text="${error}"></p>
                         </div>
+						<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 						<button type="submit">
 							Sign up
 						</button>
@@ -99,9 +100,6 @@
 							<b onclick="toggle()" class="pointer">Registrati</b>
 						</p>
 					</form>
-				</div>
-				<div class="form-wrapper">
-		
 				</div>
 			</div>
 			<!-- END SIGN IN -->

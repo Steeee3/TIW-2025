@@ -14,7 +14,7 @@ public interface AddressRepository extends JpaRepository<Address, Integer> {
     @Query("SELECT a FROM Address a WHERE a.city = :city AND a.postalCode = :postalCode AND a.street = :street AND a.country = :country")
     Optional<Address> findExactMatch(
         @Param("city") String city,
-        @Param("postalCode") int postalCode,
+        @Param("postalCode") String postalCode,
         @Param("street") String street,
         @Param("country") Country country
     );

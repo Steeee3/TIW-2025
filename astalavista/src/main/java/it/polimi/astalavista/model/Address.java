@@ -21,7 +21,7 @@ public class Address {
     private String city;
 
     @Column(name = "postal_code")
-    private int postalCode;
+    private String postalCode;
 
     @Column
     private String street;
@@ -34,7 +34,7 @@ public class Address {
 
     }
 
-    public Address(String city, int postalCode, String street, Country country) {
+    public Address(String city, String postalCode, String street, Country country) {
         this.city = city;
         this.postalCode = postalCode;
         this.street = street;
@@ -49,11 +49,11 @@ public class Address {
         this.city = city;
     }
 
-    public int getPostalCode() {
+    public String getPostalCode() {
         return postalCode;
     }
 
-    public void setPostalCode(int postalCode) {
+    public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
 

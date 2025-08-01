@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dettagli Asta</title>
+  <title>Offerte</title>
   <link rel="stylesheet" href="/css/home.css">
   <link rel="stylesheet" href="/css/article.css">
   <link rel="stylesheet" href="/css/header.css">
@@ -15,6 +15,14 @@
   <div class="auction-section">
 
     <h1 th:text="'Dettagli Lotto #' + ${auction.id}">Dettagli Asta</h1>
+
+    <div th:if="${error}" class="alert alert-danger" style="color: red; font-weight: bold; margin: 1rem;">
+        <p th:text="${error}"></p>
+    </div>
+
+    <div th:if="${success}" class="alert alert-success" style="color: green; font-weight: bold; margin: 1rem;">
+        <p th:text="${success}"></p>
+    </div>
 
     <!-- Prodotti -->
      <div class="auction-card">
@@ -39,15 +47,25 @@
             </div>
         </div>
         <h2 th:text="|Prezzo di partenza: ${auction.startPrice} €|"></h2>
+        <h2 th:text="|Rialzo minimo: ${auction.bidStep} €|"></h2>
+        <h3 th:text="|Scade il: ${#temporals.format(auction.endDate, 'dd/MM/yyyy HH:mm:ss')}|"></h3>
+        <h5 th:text="|Venduto da: ${seller}|"></h5>
       </div>
     </div>
 
-    <!-- Vincitore -->
-    <div class="auction-card" th:if="${auction.closed and winner != null}">
-      <h2>Vincitore</h2>
-      <p><strong th:text="|${winner.name} ${winner.surname}|">Mario Rossi</strong></p>
-      <p th:text="|${winner.address.street}, ${winner.address.city} (${winner.address.postalCode})|">Indirizzo</p>
-    </div>
+    <form action="/placeOffer" method="post" style="text-align:center; margin-top:1rem; margin-bottom:1rem;">
+        <input type="hidden" name="auctionId" th:value="${auction.id}" />
+
+        <input type="number" name="offer" th:min="${auction.startPrice}" th:step="${auction.bidStep}" placeholder="Offerta (€)"
+            style="padding: 0.8rem; width: 40%; max-width: 300px; border-radius: var(--radius); border: 1px solid #ccc;" required />
+
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+        <button type="submit"
+            style="padding: 0.8rem 1.2rem; background-color: var(--primary-color); color: white; border: none; border-radius: var(--radius); font-weight: bold; cursor: pointer;">
+            Fai un'offerta
+        </button>
+    </form>
 
     <!-- Offerte -->
     <div class="auction-card">
@@ -58,7 +76,7 @@
       <ul th:if="${offers != null and !offers.isEmpty()}">
         <li th:each="offer : ${offers}">
           <strong th:text="${offer.user.username}">utente</strong> -
-          <span th:text="|${offer.amount} €|">0.00 €</span>
+          <span th:text="|${offer.price} €|">0.00 €</span>
           <em th:text="${#temporals.format(offer.timestamp, 'dd/MM/yyyy HH:mm:ss')}">data</em>
         </li>
       </ul>

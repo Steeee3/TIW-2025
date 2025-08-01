@@ -82,4 +82,12 @@ public class AuctionService {
     public Optional<Auction> getAuctionById(int id) {
         return auctionRepository.findById(id);
     }
+
+    public List<Auction> getAllOpenAuctions() {
+        return auctionRepository.findByIsClosedOrderByEndDateDesc("N");
+    }
+
+    public List<Auction> getAllAuctionsByKeyword(String keyword) {
+        return auctionRepository.findOpenAuctionsByKeyword(keyword);
+    }
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import it.polimi.astalavista.exceptions.CountryNotAvailableException;
 import it.polimi.astalavista.service.CountryService;
 import it.polimi.astalavista.service.LoginService;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +24,9 @@ public class LoginController {
     private CountryService countryService;
 
     @GetMapping({"/login", "/register"})
-    public String showLoginPage(Model model) {
+    public String showLoginPage(HttpServletRequest request, Model model) {
+        request.getSession(true);
+
         model.addAttribute("countries", countryService.getAllCountries());
         model.addAttribute("activeForm", "login");
         return "login";

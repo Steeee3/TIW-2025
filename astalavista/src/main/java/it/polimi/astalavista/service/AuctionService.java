@@ -90,4 +90,8 @@ public class AuctionService {
     public List<Auction> getAllAuctionsByKeyword(String keyword) {
         return auctionRepository.findOpenAuctionsByKeyword(keyword);
     }
+
+    public List<Auction> getAllAuctionsWonByUser(User user) {
+        return auctionRepository.findClosedAuctionsWonByUser(user);
+    }
 }

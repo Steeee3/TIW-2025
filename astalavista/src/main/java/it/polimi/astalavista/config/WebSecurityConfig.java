@@ -44,12 +44,11 @@ public class WebSecurityConfig {
                 .userDetailsService(customUserDetailsService)
             )
             .logout(logout -> logout
-                .logoutRequestMatcher(request -> 
-                    request.getRequestURI().equals("/logout") &&
-                    ("GET".equalsIgnoreCase(request.getMethod()) || "POST".equalsIgnoreCase(request.getMethod()))
-                )
-                .logoutSuccessUrl("/login?logout=true")
-                .deleteCookies("JSESSIONID", "remember-me")
+                .logoutUrl("/logout") // attiva il logout su GET e POST su questa URL
+                .logoutSuccessUrl("/login?logout=true") // dove vai dopo il logout
+                .invalidateHttpSession(true) // invalida la sessione
+                .deleteCookies("JSESSIONID", "remember-me") // elimina i cookie
+                .permitAll() // permette a chiunque di fare logout
             );
 
         return http.build();

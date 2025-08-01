@@ -48,7 +48,7 @@
                 <p>Non hai ancora aste chiuse.</p>
             </div>
 
-            <div class="auction-card reveal-left" th:each="auction : ${closedAuctions}">
+            <a th:href="@{/details/{id}(id=${auction.id})}" class="auction-card reveal-left" th:each="auction : ${closedAuctions}">
                 <div class="fade-in">
                     <div class="auction-header">
                         <h2 th:text="'Lotto #' + ${auction.id}"></h2>
@@ -71,7 +71,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
     </section>
     <section id="addArticle">

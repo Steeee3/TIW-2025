@@ -42,8 +42,20 @@
       </div>
     </div>
 
+    <div class="auction-card" th:if="${!auction.isClosed()}">
+      <h2>Azioni Asta</h2>
+      <form action="/closeAuction" method="post" style="text-align:center; margin-top:1rem; margin-bottom:1rem;">
+        <input type="hidden" name="auctionId" th:value="${auction.id}" />
+        
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <button type="submit" class="confirm-button">
+            Termina Asta
+        </button>
+      </form>
+    </div>
+
     <!-- Vincitore -->
-    <div class="auction-card" th:if="${auction.closed and winner != null}">
+    <div class="auction-card" th:if="${auction.isClosed() and winner != null}">
       <h2>Vincitore</h2>
       <p><strong th:text="|${winner.name} ${winner.surname}|">Mario Rossi</strong></p>
       <p th:text="|${winner.address.street}, ${winner.address.city} (${winner.address.postalCode})|">Indirizzo</p>

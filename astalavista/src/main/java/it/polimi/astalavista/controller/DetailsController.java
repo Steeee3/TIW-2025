@@ -1,11 +1,13 @@
 package it.polimi.astalavista.controller;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,10 +21,12 @@ import it.polimi.astalavista.service.ArticleService;
 import it.polimi.astalavista.service.AuctionService;
 import it.polimi.astalavista.service.ImageService;
 import it.polimi.astalavista.service.OfferService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
-public class AuctionDetailsController {
+public class DetailsController {
 
     @Autowired
     private AuctionService auctionService;
@@ -37,8 +41,13 @@ public class AuctionDetailsController {
     private ImageService imageService;
     
     @GetMapping("/details/{id}")
-    public String showAuctionDetails(@PathVariable int id, Model model) {
+    public String showAuctionDetails(@PathVariable int id, Principal principal, Model model) {
         Auction auction = auctionService.getAuctionById(id).get();
+
+        if (!auction.getUser().getUsername().equals(principal.getName())) {
+            return "redirect:/offer/" + id;
+        }
+
         List<Offer> offers = offerService.getOffers(auction);
         List<Article> articles = articleService.getArticleByAuction(auction);
         User winner = auction.isClosed() ? offerService.getWinnerByAuction(auction).orElse(null) : null;
@@ -61,5 +70,16 @@ public class AuctionDetailsController {
 
         return "details";
     }
+
+    @PostMapping("/closeAuction")
+    @Transactional
+    public String closeAuction(@RequestParam int auctionId) {
+        Auction auction = auctionService.getAuctionById(auctionId).get();
+
+        auction.close();
+
+        return "redirect:/details/" + auctionId;
+    }
+    
     
 }

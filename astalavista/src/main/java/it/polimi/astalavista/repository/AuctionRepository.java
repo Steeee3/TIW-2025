@@ -29,4 +29,16 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
         ORDER BY art.auction.endDate DESC
     """)
     List<Auction> findOpenAuctionsByKeyword(@Param("keyword") String keyword);
+
+    @Query("""
+        SELECT a
+        FROM Auction a
+        WHERE a.isClosed = 'Y'
+        AND (SELECT o.user FROM Offer o 
+            WHERE o.auction = a
+            ORDER BY o.price DESC 
+            LIMIT 1) = :user
+        ORDER BY a.endDate DESC
+    """)
+    List<Auction> findClosedAuctionsWonByUser(@Param("user") User user);
 }

@@ -71,8 +71,7 @@ public class AuctionService {
             .toList();
         
         for (Auction closed : closedAuctions) {
-            closed.close();
-            auctionRepository.save(closed);
+            closeAuction(closed);
         }
         auctions.removeAll(closedAuctions);
 
@@ -84,15 +83,45 @@ public class AuctionService {
     }
 
     public Optional<Auction> getAuctionById(int id) {
-        return auctionRepository.findById(id);
+        Optional<Auction> auction = auctionRepository.findById(id);
+
+        auction.ifPresent(a -> {
+            if (a.isClosed()) {
+                closeAuction(a);
+            }
+        });
+
+        return auction;
     }
 
     public List<Auction> getAllOpenAuctions() {
-        return auctionRepository.findByIsClosedOrderByEndDateDesc("N");
+        List<Auction> auctions = auctionRepository.findByIsClosedOrderByEndDateDesc("N");
+
+        List<Auction> closedAuctions = auctions.stream()
+            .filter(a -> a.isClosed())
+            .toList();
+        
+        for (Auction closed : closedAuctions) {
+            closeAuction(closed);
+        }
+        auctions.removeAll(closedAuctions);
+
+        return auctions;
     }
 
     public List<Auction> getAllAuctionsByKeyword(String keyword) {
-        return auctionRepository.findOpenAuctionsByKeyword(keyword);
+        List<Auction> auctions = auctionRepository.findOpenAuctionsByKeyword(keyword);
+
+        List<Auction> closedAuctions = auctions.stream()
+            .filter(a -> a.isClosed())
+            .toList();
+        
+        for (Auction closed : closedAuctions) {
+            closeAuction(closed);
+        }
+        auctions.removeAll(closedAuctions);
+
+        return auctions;
     }
 
     public List<Auction> getAllAuctionsWonByUser(User user) {

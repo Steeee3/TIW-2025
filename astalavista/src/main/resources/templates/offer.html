@@ -36,8 +36,8 @@
                     
                     <img th:src="@{|/${imgList[0]}|}" class="carousel-img" alt="Immagine" />
                     
-                      <button th:if="${imgList.size()} class="carousel-btn prev" onclick="prevImage(this)">&lt;</button>
-                      <button th:if="${imgList.size()} class="carousel-btn next" onclick="nextImage(this)">&gt;</button>
+                      <button th:if="${imgList.size()}" class="carousel-btn prev" onclick="prevImage(this)">&lt;</button>
+                      <button th:if="${imgList.size()}" class="carousel-btn next" onclick="nextImage(this)">&gt;</button>
                 </div>
 
                 <div class="article-details big-text">

@@ -159,5 +159,5 @@ public class SellController {
         auctionService.addAuction(user, selectedIds, endDate, bidStep);
 
         return "redirect:/sell"; 
-    } 
+    }
 }

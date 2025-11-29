@@ -1,0 +1,17 @@
+<section class="auction-section">
+  <h1>Scopri le Aste Disponibili</h1>
+
+  <form id="buy-search" class="search-form" style="text-align:center; margin-bottom:2rem;">
+    <input id="buy-keyword" type="text" name="keyword" placeholder="Cerca per parola chiave..."
+           style="padding:0.8rem; width:60%; max-width:500px; border-radius:var(--radius); border:1px solid #ccc;" />
+    <button type="submit" style="padding: 0.8rem 1.2rem; background-color: var(--primary-color); color: white; border: none; border-radius: var(--radius); font-weight: bold; cursor: pointer;">
+      Cerca
+    </button>
+  </form>
+
+  <div id="buy-empty" class="empty-message" style="display:none;">
+    <p>Nessuna asta trovata per la parola chiave selezionata.</p>
+  </div>
+
+  <div id="buy-list"></div>
+</section>

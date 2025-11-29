@@ -2,6 +2,24 @@
     "configurations": [
         {
             "type": "java",
+            "name": "AstalavistaSPAApplication",
+            "request": "launch",
+            "mainClass": "it.polimi.astalavista.AstalavistaSPAApplication"
+        },
+        {
+            "type": "java",
+            "name": "AstalavistaApplication",
+            "request": "launch",
+            "mainClass": "it.polimi.astalavistaSPA.AstalavistaApplication"
+        },
+        {
+            "type": "java",
+            "name": "AstalavistaApplication",
+            "request": "launch",
+            "mainClass": "it.polimi.astalavista.AstalavistaApplication"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-AstalavistaApplication<astalavista>",
             "request": "launch",
             "cwd": "${workspaceFolder}",

@@ -1,0 +1,79 @@
+function renderHome(v) {
+  const html =
+  `
+  <section class="container landing-info">
+        <section class="centering">
+            <header>
+                <a href="/home">
+                    <img class="logo" src="/images/logo.png" alt="AstaLaVista">
+                </a>
+                <a href="/home">
+                    <h2>
+                        Asta<span class="highlight">La</span>Vista
+                    </h2>
+                </a>
+            </header>
+            <div class="container centering">
+                <h1>"Che l'offerta sia con te."</h1>
+                <aside class="center-aligned">
+                    AstaLaVista è la piattaforma dove ogni oggetto trova il suo acquirente… al miglior prezzo.<br>
+                    Scopri aste in tempo reale, rilancia al momento giusto e aggiudicati occasioni uniche.<br>
+                    Che tu voglia vendere o comprare, qui il tempo è tutto. Preparati a fare offerte che non potrai rifiutare.
+                </aside>
+            </div>
+        </section>
+        <section class="container centering">
+            <header>
+
+            </header>
+            <div class="bg-card parallax collectables"></div>
+        </section>
+    </section>
+
+    <section class="container sell theme-color">
+        <section class="container centering"> 
+            <div class="bg-card parallax stamps"></div>
+        </section>
+        <section class="centering">
+            <p class="text-white text-xxl text-shadow">VENDI I TUOI ARTICOLI!</p>
+            <div class="feature right white">
+                <div class="feature-image baseball"></div>
+                <div class="feature-content">
+                    <h2>Hai articoli da collezione?</h2>
+                    <p class="feature-description">Mettili in vendita in 3 semplici passaggi:</p>
+                    <ul class="feature-checklist">
+                        <li>📸 Carica delle foto</li>
+                        <li>📝 Aggiungi una descrizione</li>
+                        <li>💶 Scegli il prezzo di partenza</li>
+                    </ul>
+                    <button class="feature-button" onclick="window.location.href='/sell'">Inizia a vendere</button>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <section class="container buy">
+        <section class="centering">
+            <p class="text-xxl text-shadow">AGGIUDICATI LE ASTE MIGLIORI!</p>
+            <div class="feature right white">
+                <div class="feature-image posters"></div>
+                <div class="feature-content">
+                    <h2>Esplora le aste in corso</h2>
+                    <p class="feature-description">Collezionismo, vintage... Aggiudicati ciò che ami.</p>
+                    <ul class="feature-checklist">
+                        <li>🖼️ Gallerie dettagliate</li>
+                        <li>📅 Occhio alla scadenza</li>
+                        <li>🛒 Aggiungi alla tua collezione con un clic</li>
+                    </ul>
+                    <button class="feature-button" onclick="window.location.href='/buy'">Scopri le aste</button>
+                </div>
+            </div>
+        </section>
+        <section class="container centering"> 
+            <div class="bg-card parallax vinyl"></div>
+        </section>
+    </section>
+  `
+
+  v.innerHTML = html;
+}

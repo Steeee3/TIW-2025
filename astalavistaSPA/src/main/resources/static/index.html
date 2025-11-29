@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="_csrf" th:content="${_csrf.token}">
+  <meta name="_csrf_header" th:content="${_csrf.headerName}">
+  <title>AstaLaVista</title>
+  <link rel="stylesheet" href="/css/home.css">
+   <link rel="stylesheet" href="/css/article.css" />
+   <link rel="stylesheet" href="/css/header.css" />
+   <link rel="stylesheet" href="/css/buy.css" />
+</head>
+<body>
+  <div class="header fade-in">
+        <div class="navbar">
+            <a href="/home" class="logo-container">
+                <img src="/images/logo.png" alt="Logo"/>
+                <span>AstaLaVista</span>
+            </a>
+
+            <button class="hamburger" onclick="toggleMenu()">☰</button>
+
+            <nav class="nav-links" id="navLinks">
+                <a onclick="navigate('/home');return false;">Home</a>
+                <a onclick="navigate('/sell');return false;">Vendi</a>
+                <a onclick="navigate('/buy');return false;">Compra</a>
+                <a onclick="navigate('/won');return false;">Aggiudicate</a>
+                <a href="#" onclick="logout(); return false;">Logout</a>
+            </nav>
+        </div>
+    </div>
+    <main id="view">Loading...</main>
+  <!-- utility -->
+   <script src="/js/header.js" defer></script>
+  <script src="/js/utils.js" defer></script>
+  <script src="/js/localStorage.js" defer></script>
+  <script src="/js/Router.js" defer></script>
+
+  <!-- render -->
+  <script src="/js/fragments/buy.js" defer></script>
+  <script src="/js/fragments/sell.js" defer></script>
+  <script src="/js/fragments/home.js" defer></script>
+  <script src="/js/fragments/won.js" defer></script>
+  <script src="/js/fragments/details.js" defer></script>
+  <script src="/js/fragments/offer.js" defer></script>
+
+  <!-- routing -->
+  <script src="/js/routing.js" defer></script>
+
+  <script src="/js/app.js" defer></script>
+</body>
+</html>

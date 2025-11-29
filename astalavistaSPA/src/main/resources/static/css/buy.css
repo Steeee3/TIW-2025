@@ -1,0 +1,43 @@
+#buy-list{
+  position: relative;
+  display: grid;         /* evita collassi e semplifica la spaziatura */
+  gap: 28px;             /* separa visivamente i pallini */
+  padding-left: 64px;    /* spazio per binario+pallini */
+}
+
+/* La linea verticale deve stare sul contenitore che cresce con le card */
+#buy-list::before{
+  content: "";
+  position: absolute;
+  left: 28px;
+  top: 0; bottom: 0;     /* copre tutta l’altezza della lista */
+  width: 2px;
+  background: #e9eaee;
+}
+
+/* Ogni card deve essere un blocco con contesto proprio */
+#buy-list > a.auction-card{
+  display: block;
+  position: relative;
+  margin: 0;             /* lo spacing lo dà il gap del contenitore */
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.06);
+  padding: 16px;
+  display: flow-root;    /* contiene eventuali float interni */
+}
+
+/* Pallino sulla card (se lo usi) */
+#buy-list > a.auction-card::before{
+  content: "";
+  position: absolute;
+  left: 22px;            /* centrato sul binario */
+  top: 20px;             /* non più attaccato al bordo */
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--primary-color, #f4762d);
+}
+
+/* Spegni eventuali pseudo-elementi legacy in conflitto */
+.auction-card::after{ content: none !important; }

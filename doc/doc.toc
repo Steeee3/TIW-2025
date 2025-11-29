@@ -1,0 +1,40 @@
+\babel@toc {italian}{}\relax 
+\babel@toc {italian}{}\relax 
+\contentsline {section}{\numberline {1}Introduction}{1}{}%
+\contentsline {section}{\numberline {2}Database}{2}{}%
+\contentsline {subsection}{\numberline {2.1}ER Diagram}{2}{}%
+\contentsline {subsection}{\numberline {2.2}Database DDL (Data Definition Language)}{2}{}%
+\contentsline {subsubsection}{\numberline {2.2.1}Users Table}{2}{}%
+\contentsline {subsubsection}{\numberline {2.2.2}Addresses Table}{3}{}%
+\contentsline {subsubsection}{\numberline {2.2.3}Countries Table}{3}{}%
+\contentsline {subsubsection}{\numberline {2.2.4}Articles Table}{3}{}%
+\contentsline {subsubsection}{\numberline {2.2.5}Offers Table}{4}{}%
+\contentsline {subsubsection}{\numberline {2.2.6}Auctions Table}{4}{}%
+\contentsline {subsubsection}{\numberline {2.2.7}Images Table}{4}{}%
+\contentsline {section}{\numberline {3}Application Design}{5}{}%
+\contentsline {subsection}{\numberline {3.1}Login and Register}{5}{}%
+\contentsline {subsection}{\numberline {3.2}Home}{5}{}%
+\contentsline {subsection}{\numberline {3.3}Sell}{6}{}%
+\contentsline {subsection}{\numberline {3.4}Buy}{7}{}%
+\contentsline {subsection}{\numberline {3.5}Details}{8}{}%
+\contentsline {subsection}{\numberline {3.6}Offer}{9}{}%
+\contentsline {subsection}{\numberline {3.7}Won}{10}{}%
+\contentsline {section}{\numberline {4}Components}{10}{}%
+\contentsline {subsection}{\numberline {4.1}Model Objects}{10}{}%
+\contentsline {subsection}{\numberline {4.2}Repositories}{10}{}%
+\contentsline {subsection}{\numberline {4.3}Controllers}{11}{}%
+\contentsline {subsection}{\numberline {4.4}Services}{11}{}%
+\contentsline {section}{\numberline {5}Events: Sequence Diagrams}{11}{}%
+\contentsline {subsection}{\numberline {5.1}SPA: general case}{11}{}%
+\contentsline {subsection}{\numberline {5.2}Sell: loading user details}{12}{}%
+\contentsline {subsubsection}{\numberline {5.2.1}SPA case}{12}{}%
+\contentsline {subsection}{\numberline {5.3}Sell: uploading new article}{12}{}%
+\contentsline {subsubsection}{\numberline {5.3.1}SPA case}{12}{}%
+\contentsline {subsection}{\numberline {5.4}Sell: creating new auction}{13}{}%
+\contentsline {subsubsection}{\numberline {5.4.1}SPA case}{13}{}%
+\contentsline {subsection}{\numberline {5.5}Buy: loading auctions and keyword search}{13}{}%
+\contentsline {subsubsection}{\numberline {5.5.1}SPA case}{13}{}%
+\contentsline {subsection}{\numberline {5.6}Details: loading auction details}{14}{}%
+\contentsline {subsection}{\numberline {5.7}Details: closing auction}{14}{}%
+\contentsline {subsection}{\numberline {5.8}Offer: place offer}{15}{}%
+\contentsline {section}{\numberline {6}Security Model}{15}{}%

@@ -1,0 +1,323 @@
+\documentclass{article}
+
+\usepackage[italian]{babel}  % traduzioni + sillabazione
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric}
+\usepackage[margin=1in]{geometry}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\renewcommand{\familydefault}{\sfdefault}
+
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{inconsolata}
+\lstdefinestyle{miosql}{
+  language=SQL,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\bfseries\color{blue!60!black},
+  commentstyle=\itshape\color{gray!70!black},
+  stringstyle=\color{teal!60!black},
+  numbers=left, numberstyle=\tiny, numbersep=8pt,
+  frame=single, breaklines=true, showstringspaces=false,
+}
+
+\begin{document}
+
+\graphicspath{{./images}}
+
+
+\begin{titlepage}
+    \centering
+    \vspace*{3cm}
+    {\Huge\bfseries Documentation: AstaLaVista\par}
+    \vspace{2cm}
+    {\Large Stefano Carletto - 10892219 \par}
+    {\Large Esercizio 1 \par}
+\end{titlepage}
+
+\tableofcontents
+
+\section{Introduction}
+This project was developed using Spring Boot as the backend framework. The choice of Spring Boot was motivated by its modern and opinionated approach to building web applications, which reduces boilerplate code and speeds up development. Its strong integration with Spring Security, simplified configuration, and production-ready features make it well-suited for scalable and secure applications.
+
+For data persistence, a MySQL relational database was used, providing a reliable and widely supported solution for structured data management.
+
+\section{Database}
+
+\subsection{ER Diagram}
+
+\vfill
+\begin{center}
+    \includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{erDiagram.png}
+\end{center}
+\vfill
+
+\subsection{Database DDL (Data Definition Language)}
+
+\subsubsection{Users Table}
+
+\begin{lstlisting}[style=miosql,caption={Users table},label={lst:ddl}]
+CREATE TABLE `users` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`username` VARCHAR(100) NOT NULL COLLATE 'utf8mb4_general_ci',
+	`password` VARCHAR(100) NOT NULL COLLATE 'utf8mb4_general_ci',
+	`name` VARCHAR(100) NOT NULL COLLATE 'utf8mb4_general_ci',
+	`surname` VARCHAR(100) NOT NULL COLLATE 'utf8mb4_general_ci',
+	`address_id` INT(11) NULL DEFAULT NULL,
+	PRIMARY KEY (`id`) USING BTREE,
+	UNIQUE INDEX `Users_unique` (`username`) USING BTREE,
+	INDEX `FK_users_addresses` (`address_id`) USING BTREE,
+	CONSTRAINT `FK_users_addresses` FOREIGN KEY (`address_id`) REFERENCES `addresses` (`id`) ON UPDATE RESTRICT ON DELETE SET NULL
+)
+\end{lstlisting}
+
+\subsubsection{Addresses Table}
+\begin{lstlisting}[style=miosql,caption={Addresses table},label={lst:ddl}]
+CREATE TABLE `addresses` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`street` VARCHAR(50) NOT NULL DEFAULT 'Via Roma 11' COLLATE 'utf8mb4_general_ci',
+	`postal_code` VARCHAR(50) NOT NULL DEFAULT '22040' COLLATE 'utf8mb4_general_ci',
+	`city` VARCHAR(50) NOT NULL DEFAULT 'Alzate Brianza' COLLATE 'utf8mb4_general_ci',
+	`extra_info` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8mb4_general_ci',
+	`country_id` INT(11) NULL DEFAULT NULL,
+	PRIMARY KEY (`id`) USING BTREE,
+	INDEX `FK_addresses_countries` (`country_id`) USING BTREE,
+	CONSTRAINT `FK_addresses_countries` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON UPDATE RESTRICT ON DELETE SET NULL
+)
+\end{lstlisting}
+
+\subsubsection{Countries Table}
+\begin{lstlisting}[style=miosql,caption={Countries table},label={lst:ddl}]
+CREATE TABLE `countries` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`name` CHAR(100) NOT NULL COLLATE 'utf8mb4_general_ci',
+	`ISO` CHAR(2) NOT NULL COLLATE 'utf8mb4_general_ci',
+	PRIMARY KEY (`id`) USING BTREE,
+	UNIQUE INDEX `name` (`name`) USING BTREE,
+	UNIQUE INDEX `ISO` (`ISO`) USING BTREE
+)
+\end{lstlisting}
+
+\subsubsection{Articles Table}
+\begin{lstlisting}[style=miosql,caption={Articles table},label={lst:ddl}]
+CREATE TABLE `articles` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(50) NOT NULL DEFAULT 'bomba nucleare' COLLATE 'utf8mb4_general_ci',
+	`description` TEXT NOT NULL COLLATE 'utf8mb4_general_ci',
+	`price` FLOAT NOT NULL DEFAULT '10',
+	`is_sold` ENUM('Y','N') NOT NULL DEFAULT 'N' COLLATE 'utf8mb4_general_ci',
+	`user_id` INT(11) NOT NULL DEFAULT '0',
+	`auction_id` INT(11) NULL DEFAULT NULL,
+	PRIMARY KEY (`id`) USING BTREE,
+	INDEX `FK_articles_users` (`user_id`) USING BTREE,
+	INDEX `FK_articles_auctions` (`auction_id`) USING BTREE,
+	CONSTRAINT `FK_articles_auctions` FOREIGN KEY (`auction_id`) REFERENCES `auctions` (`id`) ON UPDATE RESTRICT ON DELETE RESTRICT,
+	CONSTRAINT `FK_articles_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE RESTRICT ON DELETE SET NULL
+)
+\end{lstlisting}
+
+\subsubsection{Offers Table}
+\begin{lstlisting}[style=miosql,caption={Offers table},label={lst:ddl}]
+CREATE TABLE `offers` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`price` FLOAT NOT NULL DEFAULT '0',
+	`timestamp` DATETIME NOT NULL,
+	`user_id` INT(11) NOT NULL DEFAULT '0',
+	`auction_id` INT(11) NULL DEFAULT NULL,
+	PRIMARY KEY (`id`) USING BTREE,
+	INDEX `FK__users` (`user_id`) USING BTREE,
+	INDEX `FK_offers_auctions` (`auction_id`) USING BTREE,
+	CONSTRAINT `FK__users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE RESTRICT ON DELETE RESTRICT,
+	CONSTRAINT `FK_offers_auctions` FOREIGN KEY (`auction_id`) REFERENCES `auctions` (`id`) ON UPDATE RESTRICT ON DELETE CASCADE
+)
+\end{lstlisting}
+
+\subsubsection{Auctions Table}
+\begin{lstlisting}[style=miosql,caption={Auctions table},label={lst:ddl}]
+CREATE TABLE `auctions` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`start_date` DATETIME NULL DEFAULT NULL,
+	`end_date` DATETIME NULL DEFAULT NULL,
+	`start_price` FLOAT NULL DEFAULT '0',
+	`bid_step` INT(11) NULL DEFAULT '1',
+	`is_closed` ENUM('Y','N') NULL DEFAULT 'N' COLLATE 'utf8mb4_general_ci',
+	`user_id` INT(11) NULL DEFAULT NULL,
+	PRIMARY KEY (`id`) USING BTREE,
+	INDEX `FK_auctions_users` (`user_id`) USING BTREE,
+	CONSTRAINT `FK_auctions_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE RESTRICT ON DELETE SET NULL
+)
+\end{lstlisting}
+
+\subsubsection{Images Table}
+\begin{lstlisting}[style=miosql,caption={Auctions table},label={lst:ddl}]
+CREATE TABLE `images` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`path` TEXT NULL DEFAULT NULL COLLATE 'utf8mb4_general_ci',
+	`priority` TINYINT(4) NOT NULL DEFAULT '0',
+	`article_id` INT(11) NOT NULL DEFAULT '0',
+	PRIMARY KEY (`id`) USING BTREE,
+	INDEX `path` (`path`(768)) USING BTREE,
+	INDEX `FK__articles` (`article_id`) USING BTREE,
+	CONSTRAINT `FK__articles` FOREIGN KEY (`article_id`) REFERENCES `articles` (`id`) ON UPDATE RESTRICT ON DELETE CASCADE
+)
+\end{lstlisting}
+
+\section{Application Design}
+
+\subsection{Login and Register}
+\begin{center}
+    \includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{loginApplicationDesign.png}
+
+    \vspace{0.5em}
+    \textit{On successful login, the authenticated user (principal) is stored in the Spring Security \textbf{SecurityContext}, 
+    which is bound to the \textbf{HttpSession}. This allows subsequent requests to access the user identity through the 
+    \textbf{@AuthenticationPrincipal} annotation or the \textbf{SecurityContextHolder}.}
+\end{center}
+\vspace{1em}
+
+\subsection{Home}
+\begin{center}
+    \includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{homeApplicationDesign.png}
+\end{center}
+\vspace{1em}
+
+\subsection{Sell}
+\begin{center}
+    \includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{sellApplicationDesign.png}
+\end{center}
+\vspace{1em}
+
+\subsection{Buy}
+\begin{center}
+    \includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{buyApplicationDesign.png}
+\end{center}
+\vspace{1em}
+
+\subsection{Details}
+\begin{center}
+    \includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{detailsApplicationDesign.png}
+\end{center}
+\vspace{1em}
+
+\subsection{Offer}
+\begin{center}
+    \includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{offerApplicationDesign.png}
+\end{center}
+\vspace{1em}
+
+\subsection{Won}
+\begin{center}
+    \includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{wonApplicationDesign.png}
+\end{center}
+
+\section{Components}
+\subsection{Model Objects}
+    \begin{itemize}
+        \item \texttt{Address}
+        \item \texttt{Article}
+        \item \texttt{Auction}
+        \item \texttt{Country}
+        \item \texttt{Image}
+        \item \texttt{Offer}
+        \item \texttt{User}
+    \end{itemize}
+\subsection{Repositories}
+    \begin{itemize}
+        \item \texttt{AddressRepository}
+        \item \texttt{ArticleRepository}
+        \item \texttt{AuctionRepository}
+        \item \texttt{CountryRepository}
+        \item \texttt{ImageRepository}
+        \item \texttt{OfferRepository}
+        \item \texttt{UserRepository}
+    \end{itemize}
+\subsection{Controllers}
+    \begin{itemize}
+        \item \texttt{BuyController}
+        \item \texttt{DetailsController}
+        \item \texttt{HomeController}
+        \item \texttt{LoginController}
+        \item \texttt{OfferController}
+        \item \texttt{SellController}
+        \item \texttt{UserController}
+        \item \texttt{WonAuctionsController}
+    \end{itemize}
+\subsection{Services}
+    \begin{itemize}
+        \item \texttt{ArticleService}
+        \item \texttt{AuctionService}
+        \item \texttt{CountryService}
+        \item \texttt{CustomUserDetailsService}
+        \item \texttt{ImageService}
+        \item \texttt{LoginService}
+        \item \texttt{OfferService}
+        \item \texttt{UserService}
+    \end{itemize}
+
+\section{Events: Sequence Diagrams}
+
+\subsection{SPA: general case}
+In SPA mode, the server no longer returns server-rendered HTML but JSON; the UI is updated on the client. Routes like \texttt{GET /page} become \texttt{GET /api/....} \texttt{POST} requests do not issue server redirects; they reply with 200/201, and the client-side router changes the view without a full page reload. Authentication still uses the session cookie; the client calls \texttt{GET /api/users/me} at bootstrap.
+
+\subsection{Sell: loading user details}
+\begin{center}
+    \includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{sellSequenceDiagram.png}
+\end{center}
+\subsubsection{SPA case}
+\texttt{GET /sell} no longer used; the SPA view mounts and calls \texttt{GET /api/users/me}
+\vspace{1em}
+
+\subsection{Sell: uploading new article}
+\begin{center}
+    \includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{newArticleSequenceDiagram.png}
+\end{center}
+\subsubsection{SPA case}
+\texttt{201 JSON} with the created article; no \texttt{redirect:/sell}.
+\vspace{1em}
+
+\subsection{Sell: creating new auction}
+\begin{center}
+    \includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{newAuctionSequenceDiagram.png}
+\end{center}
+\subsubsection{SPA case}
+\texttt{201 JSON} with the created article; no \texttt{redirect:/sell}.
+\vspace{1em}
+
+\subsection{Buy: loading auctions and keyword search}
+\begin{center}
+    \includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{buySequenceDiagram.png}
+\end{center}
+\subsubsection{SPA case}
+No full page reload: \texttt{GET /api/auctions?...}
+\vspace{1em}
+
+\subsection{Details: loading auction details}
+\begin{center}
+    \includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{detailsSequenceDiagram.png}
+\end{center}
+\vspace{1em}
+
+\subsection{Details: closing auction}
+\begin{center}
+    \includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{closingAuctionSequenceDiagram.png}
+\end{center}
+\vspace{1em}
+
+\subsection{Offer: place offer}
+\begin{center}
+    \includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{placeOfferSequenceDiagram.png}
+\end{center}
+\vspace{1em}
+
+\section{Security Model}
+\begin{itemize}
+    \item \textbf{Session}: \texttt{JSESSIONID} with Spring Security (same-origin).
+    \item \textbf{CSRF}: \texttt{CookieCsrfTokenRepository} issues an \texttt{XSRF-TOKEN}; the client sends it back as \texttt{X-XSRF-TOKEN} on \texttt{POST/PATCH/DELETE}.
+    \item \textbf{CORS}: not required in same-origin.
+    \item \textbf{Passwords}: uses PasswordEncoder (\texttt{BCryptPasswordEncoder}) to securely hash and store passwords in the database.
+\end{itemize}
+\end{document}
